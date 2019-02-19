@@ -1,19 +1,60 @@
 {
   "name": "local-browser",
-  "productName":"Local Browser",
+  "productName": "Local Browser",
   "version": "1.0.0",
-  "description": "Share you localhost in a unique way",
+  "description": "Share your localhost in a unique way",
+  "author": "Harendra Chhekur <820121223505e@gmail.com>",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron ."
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "ajax-request": "^1.2.3",
     "dropbox-fs": "^0.3.1",
+    "electron-updater": "^4.0.6",
     "localtunnel": "^1.9.1",
     "mousetrap": "^1.6.2"
+  },
+  "devDependencies": {
+    "electron": "^4.0.0",
+    "electron-builder": "^20.38.4"
+  },
+  "build": {
+    "appId": "com.chhekur.local-browser",
+    "mac": {
+      "category": "",
+      "target": [
+        "zip",
+        "dmg"
+      ],
+      "icon": "assets/icons/icon.icns"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "icon": "assets/icons/icon.icns"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "icon": "assets/icons/icon.ico"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "chhekur",
+        "repo": "local-browser"
+      }
+    ]
   }
 }

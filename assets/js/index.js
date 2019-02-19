@@ -32,7 +32,7 @@ function opentab(tab){
 function newTab(url){
 	newTabCount++;
 	totalOpenedTab++;
-	$('<li id = "tab' + newTabCount + '" class = "nav-tab" onclick = "opentab(this)" data-tab_id = "tab' + newTabCount + '"><a href=""  role="tab" data-toggle="tab" data-target = "#tab_content' + newTabCount + '"><div class = "inline"><img class = "hide" id = "tab_loading' + newTabCount + '" src = "../assets/img/loading.gif" width = 15></img><img width=15 id = "tab_favicon'+ newTabCount +'"></img></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div class = "inline tab-title-bar"><span id = "tab_click' + newTabCount + '"  data-tab_id = "tab' + newTabCount + '">New Tab</span></div>&nbsp;&nbsp;&nbsp;&nbsp;<span onclick = "closeAnyTab(this)" class="close black" data-tab_id = "tab' + newTabCount + '"> x</span></a></li>').insertBefore('#new-tab-button');
+	$('<li id = "tab' + newTabCount + '" class = "nav-tab" onclick = "opentab(this)" data-tab_id = "tab' + newTabCount + '"><a href=""  role="tab" data-toggle="tab" data-target = "#tab_content' + newTabCount + '"><div class = "inline"><img class = "hide" id = "tab_loading' + newTabCount + '" src = "../assets/img/loading.gif" width = 15></img><img width=15 id = "tab_favicon'+ newTabCount +'"></img></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div class = "inline tab-title-bar"><h id = "tab_click' + newTabCount + '"  data-tab_id = "tab' + newTabCount + '">New Tab</h></div>&nbsp;&nbsp;&nbsp;&nbsp;<span onclick = "closeAnyTab(this)" class="close black" data-tab_id = "tab' + newTabCount + '"> x</span></a></li>').insertBefore('#new-tab-button');
 	$('#browsers').append('<div class="tab-pane" id = "tab_content' + newTabCount + '">\
 						<div class = "url-bar-header">\
 							<div class = "url-bar-buttons">\
@@ -194,6 +194,13 @@ function updateUrlBar(tab){
 	let temp_webview = document.getElementById(tab.webview_id);
 	let url = url_module.parse(temp_webview.getURL(), true);
 	let temp_url = temp_webview.getURL();
+
+	// handeling about page, need to fix in future
+
+	if(url.protocol == "file:" && path.basename(temp_url) == "about.html"){
+		$('#' + currentTab.url_bar_id).val('local://about');
+		return;
+	}
 	// console.log(url);
 	if(url.query.error == undefined){
 		// console.log('Hello');
@@ -349,3 +356,8 @@ ipc.send('cleareUnavailableRoutes');
 ipc.on('unavailableRoutesCleared', function(event){
 	console.log('routes cleared');
 })
+
+function openAbout(){
+	console.log('open about');
+	newTab(`file://${path.join(__dirname, '..', 'views', 'about.html')}`);
+}
