@@ -324,7 +324,8 @@ function share_website(){
 				console.log(tunnel.url);
 				ipc.send('make-route', tunnel.url, domain_name);
 				// console.log(result);
-				$($('.domain-error')[1]).html('Your website has been shared');
+				$($('.domain-error')[1]).html(`Your website has been shared<br><a onclick = "openURL('ptp://${domain_name}')">ptp://${domain_name}</a>`);
+				// newTab(`ptp://${domain_name}`);
 			})
 		}else{
 			$($('.domain-error')[1]).html('Domain not available');
