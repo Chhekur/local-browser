@@ -1,0 +1,2 @@
+## Changelog
+- Fixed: Unhandled Exceptions
