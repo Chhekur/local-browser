@@ -1,4 +1,3 @@
-
 const ipc = require('electron').ipcMain;
 const dfs = require('dropbox-fs')({
     apiKey: 'JNGlu45zHTAAAAAAAAAACtJtnrBpBH85NBIT7Ow0oI82RGptj28bATaQSAd5TRbr'

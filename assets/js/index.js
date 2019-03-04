@@ -30,6 +30,7 @@ function opentab(tab){
 }
 
 function newTab(url){
+	console.log(url);
 	newTabCount++;
 	totalOpenedTab++;
 	$('<li id = "tab' + newTabCount + '" class = "nav-tab" onclick = "opentab(this)" data-tab_id = "tab' + newTabCount + '"><a href=""  role="tab" data-toggle="tab" data-target = "#tab_content' + newTabCount + '"><div class = "inline"><img class = "hide" id = "tab_loading' + newTabCount + '" src = "../assets/img/loading.gif" width = 15></img><img width=15 id = "tab_favicon'+ newTabCount +'"></img></div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div class = "inline tab-title-bar"><h id = "tab_click' + newTabCount + '"  data-tab_id = "tab' + newTabCount + '">New Tab</h></div>&nbsp;&nbsp;&nbsp;&nbsp;<span onclick = "closeAnyTab(this)" class="close black" data-tab_id = "tab' + newTabCount + '"> x</span></a></li>').insertBefore('#new-tab-button');
@@ -47,7 +48,7 @@ function newTab(url){
 								<button class = "button url-bar-button menu-button" data-container="body" data-toggle="popover" data-placement="bottom" data-html = "true" id = "menu"><span class="mif-menu mif-2x"></span></button>\
 							</div>\
 						</div>\
-						<webview id="webview' + newTabCount + '" src = "' + url + '" class = "webview" nodeintegration></webview>\
+						<webview id="webview' + newTabCount + '" src = "' + url + '" class = "webview" webpreferences="javascript=yes"></webview>\
 					</div>');
 
 	tabs['tab' + newTabCount] = {
@@ -135,7 +136,7 @@ function openURL(url){
 			// $('#' + currentTab.url_bar_id).val(final_url.final_url);
 			webview.loadURL(final_url.final_url);
 		}
-	}else if(temp.protocol != 'http:' && temp.protocol != "localhost:" && temp.protocol != 'https:' && temp.protocol != 'ptp:' && temp.protocol != null){
+	}else if(temp.protocol != 'http:' && temp.protocol != "localhost:" && temp.protocol != 'https:' && temp.protocol != 'ptp:' && temp.protocol != null && temp.protocol != 'file:'){
 		let generated_error_page = error_page({errorCode:-501, validatedURL:url});
 			webview.executeJavaScript(`document.body.innerHTML = '';document.write('${generated_error_page}')`);
 	}else{
@@ -156,7 +157,7 @@ $('body').on('keypress', '.url-bar', function(e){
 	// return e.which != 13;
 	if(e.which == 13){
 		// console.log($('#' + currentTab.url_bar_id).val());
-		let url = $('#' + currentTab.url_bar_id).val().toLowerCase();
+		let url = $('#' + currentTab.url_bar_id).val();
 		console.log(url);
 		openURL(url);
 		return false;
@@ -360,5 +361,6 @@ ipc.on('unavailableRoutesCleared', function(event){
 
 function openAbout(){
 	console.log('open about');
+	console.log(`file://${path.join(__dirname, '..', 'views', 'about.html')}`);
 	newTab(`file://${path.join(__dirname, '..', 'views', 'about.html')}`);
 }

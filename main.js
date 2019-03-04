@@ -4,7 +4,6 @@ const dialog = require('electron').dialog;
 require('./assets/js/main_functions.js');
 
 
-
 global.app = electron.app
 
 const BrowserWindow = electron.BrowserWindow
@@ -22,7 +21,7 @@ function createWindow () {
 		slashes: true
 	}))
 	// Open the DevTools.
-	// mainWindow.webContents.openDevTools()
+	mainWindow.webContents.openDevTools()
 	// Emitted when the window is closed.
 	mainWindow.on('closed', function () {
 		// Dereference the window object, usually you would store windows

@@ -19,7 +19,7 @@ Local Browser works on **ptp** protocol, ptp stands for **Peer To Peer Protocol*
 
 ### Libraries 🌟
 
-Scribbler uses a number of API's and libraries to work properly:
+Local Browser uses a number of API's and libraries to work properly:
 
 * ✅ [NodeJs] - evented I/O for the backend
 * ✅ [localtunnel] - library to tunnel localhost
