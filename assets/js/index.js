@@ -192,6 +192,7 @@ function reloadCurrentTab(){
 }
 
 function updateUrlBar(tab){
+	// console.log('loading');
 	let temp_webview = document.getElementById(tab.webview_id);
 	let url = url_module.parse(temp_webview.getURL(), true);
 	let temp_url = temp_webview.getURL();
@@ -213,7 +214,7 @@ ipc.on('get-original-route', function(event, final_url){
 	if(final_url.error){
 		// console.log(webview.getURL());
 		let temp_url = url_module.parse(webview.getURL(), true);
-		console.log(temp_url);
+		console.log(temp_url, final_url);
 		if(temp_url.query){
 			if(temp_url.query.error != "true" && !temp_url.query.errorDesc){
 				// console.log('asfasfasdf');

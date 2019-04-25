@@ -5,6 +5,10 @@ const dfs = require('dropbox-fs')({
 const ajax = require('ajax-request');
 
 ipc.on('make-route', function(event, url, domain_name){
+	if(url[url.length - 1 ] == "/"){
+		url = url.slice(0, -1);
+	}
+	console.log(url);
 	dfs.readFile('/routes.json', (err, result) => {
 		console.log('reading json ');
 		console.log(result);
@@ -32,6 +36,7 @@ ipc.on('find-original-route', function(event, url, parsed_url){
 	dfs.readFile('/routes.json', (err, result) => {
 		let data = JSON.parse(result.toString());
 		let temp_url = parsed_url.protocol + '//' + parsed_url.hostname;
+		console.log(temp_url);
 		if(data[temp_url] == undefined){
 			mainWindow.webContents.send('get-original-route',{error:true, final_url:null} );
 			// event.returnValue = {error:true, final_url:null}
@@ -53,6 +58,7 @@ ipc.on('find-route', function(event, url, parsed_url){
 	dfs.readFile('/routes.json', (err, result) => {
 		let data = JSON.parse(result.toString());
 		let temp_url = parsed_url.protocol + '//' + parsed_url.hostname;
+		console.log(temp_url);
 		if(data[temp_url] == undefined){
 			event.returnValue = {error:true, final_url:null}
 		}else{
