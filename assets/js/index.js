@@ -318,7 +318,7 @@ function share_website(){
 		if(ipc.sendSync('is-domain-available', domain_name)){
 			let url_for_tunnel = $('#' + currentTab.url_bar_id).val();
 			let parsed_url = url_module.parse(url_for_tunnel, true);
-			if(parsed_url.hostname.indexOf(".com") > -1){
+			if((parsed_url.hostname.indexOf(".com") > -1) || (parsed_url.hostname.indexOf(".io") > -1)){
 				ipc.send('make-route', url_for_tunnel, domain_name);
 				$($('.domain-error')[1]).html(`Your website has been shared<br><a onclick = "openURL('ptp://${domain_name}')">ptp://${domain_name}</a>`);
 
