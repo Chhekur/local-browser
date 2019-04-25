@@ -318,16 +318,23 @@ function share_website(){
 		if(ipc.sendSync('is-domain-available', domain_name)){
 			let url_for_tunnel = $('#' + currentTab.url_bar_id).val();
 			let parsed_url = url_module.parse(url_for_tunnel, true);
-			// console.log(parsed_url.port);
-			let port = parsed_url.port;
-			let tunnel = localtunnel((port == null)? 80 : port, function(err){
-				if(err) console.log(err);
-				console.log(tunnel.url);
-				ipc.send('make-route', tunnel.url, domain_name);
-				// console.log(result);
+			if(parsed_url.hostname.indexOf(".com") > -1){
+				ipc.send('make-route', url_for_tunnel, domain_name);
 				$($('.domain-error')[1]).html(`Your website has been shared<br><a onclick = "openURL('ptp://${domain_name}')">ptp://${domain_name}</a>`);
-				// newTab(`ptp://${domain_name}`);
-			})
+
+			}else{
+				console.log(parsed_url)
+				// console.log(parsed_url.port);
+				let port = parsed_url.port;
+				let tunnel = localtunnel((port == null)? 80 : port, function(err){
+					if(err) console.log(err);
+					console.log(tunnel.url);
+					ipc.send('make-route', tunnel.url, domain_name);
+					// console.log(result);
+					$($('.domain-error')[1]).html(`Your website has been shared<br><a onclick = "openURL('ptp://${domain_name}')">ptp://${domain_name}</a>`);
+					// newTab(`ptp://${domain_name}`);
+				})
+			}
 		}else{
 			$($('.domain-error')[1]).html('Domain not available');
 			// console.log($('.domain-error'))
