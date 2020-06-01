@@ -1,6 +1,6 @@
 const ipc = require('electron').ipcMain;
 const dfs = require('dropbox-fs')({
-    apiKey: 'JNGlu45zHTAAAAAAAAAACtJtnrBpBH85NBIT7Ow0oI82RGptj28bATaQSAd5TRbr'
+    apiKey: Buffer.from('TktpMWdtRmN2YUlBQUFBQUFBQUFRd3dfa29fN0g0MFg3aUx2eWRtZVEwUFhjYlAzRXZkOTlWbFZLY3VwR3kydA==', 'base64').toString()
 });
 const ajax = require('ajax-request');
 
@@ -89,7 +89,7 @@ ipc.on('is-domain-available', function(event, domain_name){
 
 
 function cleareUnavailableRoutes(){
-	dfs.readFile('/routes.json', function(err, result){
+	dfs.readFile('/package.json',function(err, result){
 		if(err) throw err;
 		let domains = JSON.parse(result.toString());
 		let temp_domains = domains;
