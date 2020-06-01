@@ -4,7 +4,7 @@ const url_module = require('url');
 const dfs = require('dropbox-fs')({
     apiKey: 'JNGlu45zHTAAAAAAAAAACtJtnrBpBH85NBIT7Ow0oI82RGptj28bATaQSAd5TRbr'
 });
-var localtunnel = require('localtunnel');
+var ngrok = require('ngrok');
 var app = require('http').createServer();
 // error_page = require('./error_page.js');
 
@@ -59,7 +59,8 @@ function newTab(url){
 		url_bar_id: 'url_bar' + newTabCount,
 		tab_click_id : 'tab_click' + newTabCount,
 		tab_content_id: 'tab_content' + newTabCount,
-		webview_id: 'webview' + newTabCount
+		webview_id: 'webview' + newTabCount,
+    url,
 	}
 
 	initListeners(tabs['tab' + newTabCount]);
@@ -122,6 +123,8 @@ function closeAnyTab(tab){
 
 
 function openURL(url){
+  currentTab.url = url;
+
 	let temp = url_module.parse(url);
 	// console.log(temp.protocol);
 	if(temp.protocol == null || temp.protocol == "localhost:") url = 'http://' + url;
@@ -240,7 +243,8 @@ function initListeners(tab){
 	// temp_webview.openDevTools();
 		updateUrlBar(tab);
 		// $('#' + tab.url_bar_id).val(temp_webview.getURL());
-		$('#' + tab.tab_click_id).text(temp_webview.getTitle());
+    console.log(tab.url, 'tab_url')
+		$('#' + tab.tab_click_id).text(tab.url);
 	});
 
 	temp_webview.addEventListener('did-fail-load', function(error){
@@ -308,7 +312,7 @@ $('body').on('click', function (e) {
     });
 });
 
-function share_website(){
+async function share_website(){
 	// console.log($($('.domain_name_field')[1]).val());
 	let domain_name = $($('.domain_name_field')[1]).val().toLowerCase();
 	console.log(domain_name);
@@ -327,14 +331,15 @@ function share_website(){
 				console.log(parsed_url)
 				// console.log(parsed_url.port);
 				let port = parsed_url.port;
-				let tunnel = localtunnel((port == null)? 80 : port, function(err){
-					if(err) console.log(err);
-					console.log(tunnel.url);
-					ipc.send('make-route', tunnel.url, domain_name);
-					// console.log(result);
-					$($('.domain-error')[1]).html(`Your website has been shared<br><a onclick = "openURL('ptp://${domain_name}')">ptp://${domain_name}</a>`);
-					// newTab(`ptp://${domain_name}`);
-				})
+				const url = await ngrok.connect(port == null ? 80 : port);
+
+        if(url) {
+          console.log(url, 'url');
+          ipc.send('make-route', url, domain_name);
+          // console.log(result);
+          $($('.domain-error')[1]).html(`Your website has been shared<br><a onclick = "openURL('ptp://${domain_name}')">ptp://${domain_name}</a>`);
+          // newTab(`ptp://${domain_name}`);
+        }
 			}
 		}else{
 			$($('.domain-error')[1]).html('Domain not available');
